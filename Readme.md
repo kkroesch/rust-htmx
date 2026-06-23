@@ -1,4 +1,3 @@
-```markdown
 # Employee Search – HTMX + Axum + SQLite
 
 A lightweight, hypermedia-driven employee search built with Rust and HTMX, including a command-line tool for fast lookups.
@@ -20,21 +19,6 @@ A lightweight, hypermedia-driven employee search built with Rust and HTMX, inclu
 - [Pico.css](https://picocss.com) – minimal, semantic CSS
 - [process‑compose](https://github.com/F1bonacc1/process-compose) – process runner for the Axum + Caddy pair
 
-## 📂 Project structure
-
-```
-.
-├── Caddyfile              # Reverse proxy and static files
-├── Cargo.toml             # Rust workspace with two binaries
-├── process-compose.yaml   # Process runner configuration
-├── src/
-│   ├── main.rs            # Axum server (binary: server)
-│   └── bin/
-│       └── search.rs      # CLI tool (binary: search)
-├── index.html             # HTMX frontend for the web search
-├── employees.db           # SQLite database (not in repo)
-└── README.md
-```
 
 ## 🚀 Quickstart
 
@@ -57,17 +41,15 @@ Two binaries are produced:
 
 ### Run
 
-#### a) Web server + frontend (with process‑compose)
-
 ```bash
 process-compose up
 ```
 
 This starts Axum on port 3000 and Caddy on port 8080, with Axum’s readiness probe ensuring Caddy only serves once the database is reachable.
 
-Open [http://localhost:8080](http://localhost:8080) and type a last name.
+Open [https://localhost:8000](https://localhost:8000) and type a last name.
 
-#### b) CLI tool
+#### CLI tool
 
 ```bash
 # From the project directory
@@ -87,7 +69,6 @@ Optional: specify a different database path
 
 ```
   Employee search for 'baru'
-  ══════════════════════════════════════════════════
   ──────────────────────────────────────────────────
   ID      First name      Last name       
   ──────────────────────────────────────────────────
@@ -118,4 +99,3 @@ Additionally, three indexes were created to speed up current department/title/sa
 ## 📄 License
 
 MIT – feel free to use and adapt.
-```
