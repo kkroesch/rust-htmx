@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>HTMX Suche mit Pico.css</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
+        <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    </head>
+    <body>
+        <main class="container">
+            <hgroup>
+                <h1>🔍 Mitarbeitersuche</h1>
+                <p>Nachname oder Vorname eingeben</p>
+            </hgroup>
+
+            <input
+                type="search"
+                name="q"
+                placeholder="Suchbegriff..."
+                hx-post="/search"
+                hx-trigger="keyup changed delay:300ms"
+                hx-target="#results-body"
+                hx-swap="innerHTML"
+            />
+
+            <figure>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <!-- HTMX füllt dies -->
+                    </tbody>
+                </table>
+            </figure>
+
+            <div id="detail-view" class="detail-container"></div>
+        </main>
+    </body>
+</html>

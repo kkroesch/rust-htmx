@@ -1,0 +1,19 @@
+localhost:8000
+
+# Route für die dynamische Suche an Axum weiterleiten
+route /search {
+    reverse_proxy localhost:3000
+}
+
+route /employee/* {
+    reverse_proxy localhost:3000
+}
+
+route /api/* {
+    reverse_proxy localhost:3000
+}
+
+# Alles andere sind statische Dateien
+route {
+    file_server
+}

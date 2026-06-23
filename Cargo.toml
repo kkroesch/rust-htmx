@@ -1,0 +1,20 @@
+[package]
+name = "minisearch"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "server"
+path = "src/main.rs"
+
+[[bin]]
+name = "search"
+path = "src/bin/search.rs"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite", "macros"] }
+pulldown-cmark = "0.11"
+clap = { version = "4", features = ["derive"] }   # optional, für schönes CLI

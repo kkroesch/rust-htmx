@@ -1,0 +1,29 @@
+version: "0.5"
+
+processes:
+  axum:
+    command: target/debug/server
+    working_dir: .
+    availability:
+      restart: on_failure
+    ports:
+      - 3000:3000
+    readiness_probe:
+      http_get:
+        host: 127.0.0.1
+        scheme: http
+        path: /health
+        port: 3000
+      initial_delay_seconds: 1
+      period_seconds: 2
+
+  caddy:
+    command: caddy run
+    working_dir: . # wo dein Caddyfile liegt
+    availability:
+      restart: on_failure
+    ports:
+      - 8000:8000
+    depends_on:
+      axum:
+        condition: process_healthy
