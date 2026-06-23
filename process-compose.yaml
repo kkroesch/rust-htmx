@@ -2,7 +2,7 @@ version: "0.5"
 
 processes:
   axum:
-    command: target/debug/server
+    command: cargo run --bin server
     working_dir: .
     availability:
       restart: on_failure

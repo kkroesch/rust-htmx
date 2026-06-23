@@ -17,4 +17,7 @@ tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite", "macros"] }
 pulldown-cmark = "0.11"
-clap = { version = "4", features = ["derive"] }   # optional, für schönes CLI
+clap = { version = "4", features = ["derive"] }
+tower-http = { version = "0.5", features = ["trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

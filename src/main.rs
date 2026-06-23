@@ -8,6 +8,10 @@ use serde::Serialize;
 use sqlx::SqlitePool;
 use sqlx::sqlite::SqlitePoolOptions;
 
+// Logging
+use tower_http::trace::TraceLayer;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
 #[derive(Serialize)]
 struct HealthStatus {
     status: String,
@@ -67,6 +71,8 @@ async fn search(State(pool): State<SqlitePool>, Form(form): Form<SearchForm>) ->
     if query.is_empty() {
         return Html(String::new());
     }
+
+    tracing::info!("Suche nach '{}'", query);
 
     let pattern = format!("%{}%", query);
     let rows = sqlx::query_as::<_, SimpleEmployee>(
@@ -145,6 +151,15 @@ async fn employee_detail(State(pool): State<SqlitePool>, Path(emp_no): Path<i32>
 
 #[tokio::main]
 async fn main() {
+    // Logging
+    tracing_subscriber::registry()
+        .with(tracing_subscriber::EnvFilter::new(
+            std::env::var("RUST_LOG").unwrap_or_else(|_| "info".into()),
+        ))
+        .with(tracing_subscriber::fmt::layer())
+        .init();
+
+    // Database
     let pool = SqlitePoolOptions::new()
         .max_connections(5)
         .connect("sqlite:employee.db")
@@ -167,11 +182,12 @@ async fn main() {
         .route("/health", get(health))
         .route("/search", post(search))
         .route("/employee/:id/detail", get(employee_detail))
+        .layer(TraceLayer::new_for_http())
         .with_state(pool); // <-- Pool direkt, kein extra Arc
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
         .unwrap();
-    println!("Server läuft auf 127.0.0.1:3000");
+    tracing::info!("Axum server läuft auf 127.0.0.1:3000");
     axum::serve(listener, app).await.unwrap();
 }
